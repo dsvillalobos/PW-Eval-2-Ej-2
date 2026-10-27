@@ -35,8 +35,30 @@ const reservas = {
   id: 1,
   nombre: "Alex Roldan",
   saldo: 150.0,
-  itemsReservados: [],
+  itemsReservados: [{ id: 1, cantidad: 2 }],
+  total: 11.0,
 };
+
+/**
+ * Función auxiliar para recalcular el total de la reserva
+ * tomando como referencia los precios actuales del menú
+ */
+
+const calcularTotalReserva = () => {
+  return reservas.itemsReservados.reduce((acumulado, item) => {
+    const alimento = menu.find((m) => m.id === item.id);
+    return acumulado + (alimento ? alimento.precio * item.cantidad : 0);
+  }, 0);
+};
+
+function showMenu(req, res) {
+  return res.json(menu);
+}
+
+function showReservas(req, res) {
+  reservas.total = parseFloat(calcularTotalReserva().toFixed(2));
+  return res.json(reservaUsuario);
+}
 
 async function actualizarPorciones(req, res) {
   const id = Number(req.params.id);
