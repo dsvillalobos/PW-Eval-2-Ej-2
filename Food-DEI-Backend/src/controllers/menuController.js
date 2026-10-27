@@ -38,6 +38,101 @@ const reservas = {
   itemsReservados: [],
 };
 
+async function actualizarPorciones(req, res) {
+  const id = Number(req.params.id);
+  const nuevaCantidad = Number(req.body.cantidad);
+
+  if (!Number.isInteger(nuevaCantidad) || nuevaCantidad <= 0) {
+    return res.status(400).json({
+      mensaje: "La cantidad debe ser positiva y entera",
+    });
+  }
+
+  const alimento = menu.find((item) => item.id === id);
+
+  const reservado = reserva.itemsReservados.find((item) => item.id === id);
+
+  if (!alimento || !reservado) {
+    return res.status(404).json({
+      mensaje: "Alimento no encontrado en la reserva",
+    });
+  }
+
+  const cantidadAnterior = reservado.cantidad;
+  const diferencia = nuevaCantidad - cantidadAnterior;
+
+  if (diferencia > 0 && alimento.stock < diferencia) {
+    return res.status(400).json({
+      mensaje: "Stock insuficiente",
+    });
+  }
+
+  const variacionPrecio = diferencia * alimento.price;
+
+  if (variacionPrecio > reserva.saldo) {
+    return res.status(400).json({
+      mensaje: "Saldo insuficiente para esta cantidad",
+    });
+  }
+
+  alimento.stock -= diferencia;
+  reserva.saldo -= variacionPrecio;
+
+  reservado.cantidad = nuevaCantidad;
+
+  const total = reserva.itemsReservados.reduce((suma, item) => {
+    const producto = menu.find((plato) => plato.id === item.id);
+    return suma + producto.price * item.cantidad;
+  }, 0);
+
+  return res.json({
+    mensaje: "Porciones actualizadas correctamente",
+    saldo: reserva.saldo,
+    itemsReservados: reserva.itemsReservados,
+    total,
+  });
+}
+
+async function eliminarPlato(req, res) {
+  const id = Number(req.params.id);
+
+  const reservado = reserva.itemsReservados.find((item) => item.id === id);
+
+  if (!reservado) {
+    return res.status(404).json({
+      mensaje: "El alimento no está en la reserva",
+    });
+  }
+
+  const alimento = menu.find((item) => item.id === id);
+
+  if (!alimento) {
+    return res.status(404).json({
+      mensaje: "Alimento no encontrado en el menú",
+    });
+  }
+
+  alimento.stock += reservado.cantidad;
+
+  reserva.saldo += alimento.price * reservado.cantidad;
+
+  reserva.itemsReservados = reserva.itemsReservados.filter(
+    (item) => item.id !== id,
+  );
+
+  const total = reserva.itemsReservados.reduce((suma, item) => {
+    const producto = menu.find((plato) => plato.id === item.id);
+    return suma + producto.price * item.cantidad;
+  }, 0);
+
+  return res.json({
+    mensaje: "Plato eliminado correctamente",
+    saldo: reserva.saldo,
+    itemsReservados: reserva.itemsReservados,
+    total,
+  });
+}
+
 export const agregarReserva = function (req, res) {
   const { platilloId, cantidad } = req.body;
 
