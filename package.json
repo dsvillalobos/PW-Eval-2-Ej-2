@@ -1,0 +1,24 @@
+{
+  "name": "food-dei-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Food DEI",
+  "workspaces": [
+    "Food-DEI-Backend",
+    "Food-DEI-Frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n API,WEB -c cyan,magenta \"npm run dev --workspace=food-dei-backend\" \"npm run dev --workspace=food-dei-frontend\"",
+    "dev:backend": "npm run dev --workspace=food-dei-backend",
+    "dev:frontend": "npm run dev --workspace=food-dei-frontend",
+    "build": "npm run build --workspace=food-dei-frontend",
+    "start": "npm run start --workspace=food-dei-backend"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
