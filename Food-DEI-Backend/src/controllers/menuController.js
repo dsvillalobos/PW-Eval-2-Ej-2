@@ -51,14 +51,12 @@ const calcularTotalReserva = () => {
   }, 0);
 };
 
-// Endpoint para mostrar el menu
-app.get('/api/menu', (req, res) => {
-  return res.status(200).json(menu);
-});
+function showMenu(req, res) {
+  return res.json(menu);
+  };
 
-// Endpoint para devolver los detalles de la reserva
-app.get('/api/reserva', (req, res) => {
+function showReservas(req, res) {
   reservas.total = parseFloat(calcularTotalReserva().toFixed(2));
-  return res.status(200).json(reservaUsuario);
-});
+  return res.json(reservaUsuario);
+  };
 
