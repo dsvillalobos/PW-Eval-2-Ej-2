@@ -37,3 +37,45 @@ const reservas = {
   saldo: 150.0,
   itemsReservados: [],
 };
+
+export const agregarReserva = function (req, res) {
+  const { platilloId, cantidad } = req.body;
+
+  // Validaciones
+  if (!platilloId || !cantidad) {
+    return res.status(400).json({ error: "Faltan datos requeridos" });
+  }
+
+  // Revisar si el platillo existe en el menú
+  const platillo = menu.find((item) => item.id === platilloId);
+
+  if (!platillo) {
+    return res.status(404).json({ error: "Platillo no encontrado" });
+  }
+
+  // Revisar si hay stock
+  if (platillo.stock < cantidad) {
+    return res.status(400).json({ error: "No hay suficiente stock" });
+  }
+
+  // Revisar si el usuario tiene suficiente saldo
+  const totalCosto = platillo.price * cantidad;
+
+  if (reservas.saldo < totalCosto) {
+    return res.status(400).json({ error: "Saldo insuficiente" });
+  }
+
+  // Actualizar el stock del menu y el saldo del usuario
+  platillo.stock -= cantidad;
+  reservas.saldo -= totalCosto;
+
+  // Agregar el platillo a los items reservados
+  reservas.itemsReservados.push({
+    id: platillo.id,
+    name: platillo.name,
+    cantidad: cantidad,
+    totalCosto: totalCosto,
+  });
+
+  return res.status(201).json({ message: "Reserva agregada exitosamente" });
+};
