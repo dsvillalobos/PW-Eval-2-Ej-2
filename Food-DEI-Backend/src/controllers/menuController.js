@@ -6,7 +6,7 @@ const menu = [
     price: 9.99,
     image:
       "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/1280px-Pizza-3007395.jpg",
-    stock: 20,
+    stock: 2,
     categoria: "Fuerte",
   },
   {
@@ -16,7 +16,7 @@ const menu = [
     price: 6.99,
     image:
       "https://cdn.jwplayer.com/v2/media/KcAgyiFk/thumbnails/KnxzkZhO.jpg?width=1280",
-    stock: 10,
+    stock: 3,
     categoria: "Fuerte",
   },
   {
@@ -26,7 +26,7 @@ const menu = [
     price: 6.99,
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzcXB8-djWTagt5ePs8o3-9IzOvbiC9wkbG7rot0KJ8ZCJqZRT3GllRMmM&s=10",
-    stock: 5,
+    stock: 1,
     categoria: "Light",
   },
 ];
@@ -34,7 +34,7 @@ const menu = [
 const reservas = {
   id: 1,
   nombre: "Alex Roldan",
-  saldo: 20.0,
+  saldo: 100.0,
   itemsReservados: [],
   total: 0.0,
 };

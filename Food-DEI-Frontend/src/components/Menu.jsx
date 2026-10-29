@@ -16,7 +16,7 @@ import {
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function Menu() {
+export default function Menu({ refreshKey, onReservaActualizada }) {
   const [menu, setMenu] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -40,7 +40,7 @@ function Menu() {
 
   useEffect(() => {
     obtenerMenu();
-  }, []);
+  }, [refreshKey]);
 
   const agregarReserva = async (platilloId) => {
     try {
@@ -58,7 +58,7 @@ function Menu() {
 
       setMensaje(respuesta.data.mensaje);
 
-      await obtenerMenu();
+      onReservaActualizada();
     } catch (error) {
       setError(
         error.response?.data?.error ||
@@ -145,5 +145,3 @@ function Menu() {
     </Container>
   );
 }
-
-export default Menu;
