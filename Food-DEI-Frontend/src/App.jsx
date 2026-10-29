@@ -1,4 +1,4 @@
-import Test from "./components/Test";
+import UserInfoPanel from "./components/UserInfoPanel";
 
 function App() {
   return (
