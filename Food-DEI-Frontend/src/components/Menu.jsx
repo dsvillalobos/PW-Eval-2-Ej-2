@@ -42,6 +42,17 @@ export default function Menu({ refreshKey, onReservaActualizada }) {
     obtenerMenu();
   }, [refreshKey]);
 
+  // UseEffect para limpiar el mensaje después de 3 segundos
+  useEffect(() => {
+    if (mensaje) {
+      const temporizador = setTimeout(() => {
+        setMensaje("");
+      }, 3000);
+
+      return () => clearTimeout(temporizador);
+    }
+  }, [mensaje]);
+
   const agregarReserva = async (platilloId) => {
     try {
       setPlatoAgregando(platilloId);
@@ -109,7 +120,9 @@ export default function Menu({ refreshKey, onReservaActualizada }) {
 
                   <CardText>
                     <strong>Precio:</strong>{" "}
-                    <Badge color="success">${plato.price.toFixed(2)}</Badge>
+                    <Badge color="success">
+                      ${Number(plato.price).toFixed(2)}
+                    </Badge>
                   </CardText>
 
                   <CardText>

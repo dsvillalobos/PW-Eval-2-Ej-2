@@ -42,15 +42,11 @@ export default function UserInfoPanel({ refreshKey }) {
       <Container fluid>
         <Row className="align-items-center w-100">
           <Col xs="12" md="6" className="mb-2 mb-md-0">
-            <NavbarBrand className="fw-bold">Mi Panel</NavbarBrand>
+            <NavbarBrand className="fw-bold">Food DEI</NavbarBrand>
 
-            {error ? (
+            {error && (
               <Alert color="danger" className="mb-0">
                 {error}
-              </Alert>
-            ) : (
-              <Alert color="info" className="mb-0">
-                Tu saldo actual: ${saldo.toFixed(2)}
               </Alert>
             )}
           </Col>

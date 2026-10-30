@@ -3,6 +3,8 @@ import { Container, Row, Col } from "reactstrap";
 import UserInfoPanel from "./components/UserInfoPanel";
 import Menu from "./components/Menu";
 import Reserva from "./components/Reserva";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 function App() {
   const [refreshKey, setRefreshKey] = useState(0);

@@ -36,6 +36,7 @@ export default function Reserva({ refreshKey, onReservaActualizada }) {
 
   const cargarDatos = async () => {
     try {
+      setError("");
       await Promise.all([obtenerReserva(), obtenerMenu()]);
     } catch (error) {
       setError(
@@ -89,7 +90,7 @@ export default function Reserva({ refreshKey, onReservaActualizada }) {
 
       setMensaje(respuesta.data.mensaje);
 
-      await cargarDatos();
+      onReservaActualizada();
     } catch (error) {
       setError(
         error.response?.data?.mensaje ||
@@ -135,7 +136,8 @@ export default function Reserva({ refreshKey, onReservaActualizada }) {
           </p>
 
           <ListGroup className="mb-3">
-            {reserva.itemsReservados.length === 0 ? (
+            {!reserva.itemsReservados ||
+            reserva.itemsReservados.length === 0 ? (
               <ListGroupItem>No has seleccionado ningún plato.</ListGroupItem>
             ) : (
               reserva.itemsReservados.map((item) => {
